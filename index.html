@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title></title>
+  <style>
+    html, body {
+      margin: 0;
+      font-size: 62.5%;
+    }
+    .wrapper {
+      width: 80rem;
+      height: 50rem;
+      border: 2px solid #000;
+      margin: 2rem auto;
+      display: flex;
+      flex-direction: column;
+    }
+    .header {
+      width: 100%;
+      height: 5rem;
+      border-bottom: 2px solid #000;
+      display: flex;
+      align-content: center;
+      justify-content: center;
+    }
+    .header button {
+      width: 12rem;
+      height: 80%;
+      margin: 0.5rem 2rem;
+      /*margin: 10% 1rem;*/
+    }
+    .container {
+      flex: 1;
+      position: relative;
+    }
+    .container div {
+      float: left;
+      width: 18rem;
+      height: 18rem;
+      border: 2px solid #000;
+      box-shadow: 2px 2px 12px rgba(0, 0, 0, 0.5);
+      margin: 2.4rem 0 0 1.3rem;
+      text-align: center;
+      line-height: 18rem;
+      font-size: 10rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="wrapper">
+    <div class="header">
+      <button class="random-btn">随机打乱</button>
+      <button class="sort-btn">从大到小</button>
+    </div>
+    <div class="container">
+      <div>1</div>
+      <div>2</div>
+      <div>3</div>
+      <div>4</div>
+      <div>5</div>
+      <div>6</div>
+      <div>7</div>
+      <div>8</div>
+    </div>
+  </div>
+  <script src="../../tool.js" charset="utf-8"></script>
+  <script>
+    var btns = document.querySelectorAll('.header button');
+    var boxs = document.querySelectorAll('.container div');
+    
+    var offsetData = [], i, len = boxs.length;
+    
+    // 布局转换
+    for(i = 0; i<len; i++){
+      // 保存之前每一个div的left和top值
+      offsetData.push([boxs[i].offsetLeft, boxs[i].offsetTop]);
+      boxs[i].style.backgroundColor = `rgb(${~~(Math.random() * 200 + 55)}, ${~~(Math.random() * 200 + 55)}, ${~~(Math.random() * 200 + 55)})`;
+    }
+    
+    for(i=0; i<len; i++){
+      boxs[i].style.position = 'absolute';
+      boxs[i].style.margin = 0;
+      boxs[i].style.left = offsetData[i][0] + 'px';
+      boxs[i].style.top = offsetData[i][1] + 'px';
+    }
+    
+    // 浅拷贝一份数组，进行随机排序
+    var tempData = offsetData.slice();
+    
+    btns[0].onclick = function (){
+      tempData.sort(function (){
+        return 0.5 - Math.random();
+      });
+      sortMove(tempData);
+    };
+    
+    btns[1].onclick = function (){
+      btns[1].innerHTML = btns[1].innerHTML == '从大到小' ? '从小到大' : '从大到小';
+      sortMove(offsetData.reverse());
+    };
+    
+    function sortMove(data){
+      for(i=0; i<len; i++){
+        Fq.animation(boxs[i], {
+          left: data[i][0],
+          top: data[i][1]
+        })
+      }
+    }
+    
+    
+    
+    
+    
+    
+    
+  </script>
+</body>
+</html>
